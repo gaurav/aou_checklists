@@ -1,5 +1,5 @@
 #
-# ANALYSIS FOR THE AOU PAPER BY YEAR (June 27, 2017)
+# ANALYSIS FOR THE AOU PAPER BY YEAR (July 2, 2017)
 #
 # This analysis file includes instructions for both full analyses as well
 # as pre-1982 analyses. Set the FLAG_PRE1982 = T if you would like to
@@ -7,16 +7,14 @@
 #
 # Changes:
 #   - June 22, 2017: Check for Poisson overdispersion
+#   - July 2, 2017: final rerun, incorporated Max's suggestions for the hierarchical model
 #
-
-# Make sure the taxon concept counts align with the trajectory counts.
-# 
 
 getwd()
 
 # Set up Windows fonts
-windowsFonts(Calibri=windowsFont("Calibri"))
-par(family="Calibri")
+windowsFonts(Times=windowsFont("Times"))
+par(family="Times")
 
 #
 # There is a convenience setup that controls where the output of this script
@@ -57,12 +55,15 @@ if(OUTPUT_SCREEN) { start_export <- function(fn, width=1000, height=700) { retur
 if(FLAG_PRE1982) { get_filename <- function(fn) { return(paste("graphs/pre1982_species/", fn, ".", extension, sep="")); }
 } else get_filename <- function(fn) { return(paste("graphs/all_species/", fn, ".", extension, sep="")); }
 
+#### INTRODUCTION ####
+
+
 
 ##################################
 #### PART 1: ALL LUMPS/SPLITS ####
 ##################################
 
-all_splumps <- read.csv("../splumps/list-all.csv")
+all_splumps <- read.csv("../02 - splumps/list-all.csv")
 
 summary(all_splumps$type)
 # lump: 148
