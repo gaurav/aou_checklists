@@ -229,61 +229,70 @@ splumps_by_year_with_zero
 library(Hmisc)
 
 # width=1200, height=600)
-start_export('cumul_lumps_and_splits_bargraph', width=2250, height=1200)
+previous_margins <- par()$mar
+
+scale_xy <- 1.5
+cumul_cex <- overall_cex * 2.1
+plot_lwd <- 8
+axes_lwd <- 4
+plot_xlim <- c(1889, 2016)
+
+# width=2250, height=1200)
+start_export('cumul_lumps_and_splits_bargraph', width=2250 * scale_xy, height=1200 * scale_xy)
 max_ylim <- max(sum(zoo_lumps), sum(zoo_splits))
 
 zoo_lumps
 
-previous_margins <- par()$mar
-par(mfrow=c(1, 1), cex=overall_cex, mar=c(5, 5, 2, 5)) # Margins
+par(mfrow=c(1, 1), cex=cumul_cex, mar=c(5, 5, 2, 5), lwd=axes_lwd) # Margins
 
 # Add barplot for lumps and splits.
 plot(NA,
      ylim=c(0, max(zoo_lumps, zoo_splits)),
-     xlim=c(1886, 2016),
+     xlim=plot_xlim,
      col=2, 
      ylab="Lumps and splits per checklist", 
      xlab="Year"
      # main="Cumulative lumps and splits from 1889 to 2016"
 )
+axis(side=1, lwd=axes_lwd)
+axis(side=2, lwd=axes_lwd)
 rect(
     as.integer(names(zoo_lumps)) - 0.5,
     rep(0, length(zoo_lumps)),
     as.integer(names(zoo_lumps)),
     zoo_lumps,
-    col=2
-    #,
-    #border=2
+    col=2,
+    lwd=1
 )
 rect(
     as.integer(names(zoo_splits)),
     rep(0, length(zoo_splits)),
     as.integer(names(zoo_splits)) + 0.5,
     zoo_splits,
-    col=4
-    #,
-    #border=4
+    col=4,
+    lwd=1
 )
 par(new=T)
-plot(type="l", cumsum(zoo_lumps), ylim=c(0, max_ylim), col=2, axes=F, xlab=NA, ylab=NA)
-axis(side=4)
-mtext(side=4, line=3, 'Cumulative lumps and splits', cex=overall_cex)
+plot(type="l", lwd=plot_lwd, cumsum(zoo_lumps), xlim=plot_xlim, ylim=c(0, max_ylim),  col=2, axes=F, xlab=NA, ylab=NA)
+axis(side=4, lwd=axes_lwd)
+mtext(side=4, line=3, 'Cumulative lumps and splits', cex=cumul_cex)
 par(new=T)
-plot(type="l", cumsum(zoo_splits), ylim=c(0, max_ylim), col=4, axes=F, xlab=NA, ylab=NA)
-#minor.tick(nx=10, ny=0)
+plot(type="l", lwd=plot_lwd, cumsum(zoo_splits), xlim=plot_xlim, ylim=c(0, max_ylim), col=4, axes=F, xlab=NA, ylab=NA)
+minor.tick(nx=10, ny=0)
 
-points(pty=1, cumsum(zoo_lumps), ylim=c(0, max_ylim), col=1, axes=F, xlab=NA, ylab=NA)
-points(pty=1, cumsum(zoo_splits), ylim=c(0, max_ylim), col=1, axes=F, xlab=NA, ylab=NA)
+points(pty=1, lwd=plot_lwd*0.5, cumsum(zoo_lumps), xlim=plot_xlim, ylim=c(0, max_ylim), col=1, axes=F, xlab=NA, ylab=NA)
+points(pty=1, lwd=plot_lwd*0.5, cumsum(zoo_splits), xlim=plot_xlim, ylim=c(0, max_ylim), col=1, axes=F, xlab=NA, ylab=NA)
 
 # Finish
 legend("topleft",
+       lwd=c(4, 4),
        lty=c(1, 1),
        col=c(2, 4),
        legend=c("Lumps", "Splits")
 )
 
 dev.off()
-par(mfrow=c(1, 1), cex=overall_cex, mar=previous_margins)
+par(mfrow=c(1, 1), cex=overall_cex, mar=previous_margins, lwd=1)
 
 if(0) {
     # Add cumulative plots
