@@ -241,6 +241,10 @@ plot_xlim <- c(1889, 2016)
 start_export('cumul_lumps_and_splits_bargraph', width=2250 * scale_xy, height=1200 * scale_xy)
 max_ylim <- max(sum(zoo_lumps), sum(zoo_splits))
 
+# Delete 2017
+zoo_splits <- zoo_splits[1:63]
+zoo_splits
+zoo_lumps <- zoo_lumps[1:63]
 zoo_lumps
 
 par(mfrow=c(1, 1), cex=cumul_cex, mar=c(5, 5, 2, 5), lwd=axes_lwd) # Margins
